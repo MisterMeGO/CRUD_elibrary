@@ -5,9 +5,6 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
-# AWS User-specific
-.idea/**/aws.xml
-
 # Generated files
 .idea/**/contentModel.xml
 
@@ -69,22 +66,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-
-#----------------------------------------------
-#.gitignore
-#.idea/.gitignore
-#.idea/artifacts/CRUD_elibrary_war.xml
-#.idea/artifacts/CRUD_elibrary_war_exploded.xml
-#.idea/compiler.xml
-#.idea/dataSources.xml
-#.idea/encodings.xml
-#.idea/jarRepositories.xml
-#.idea/misc.xml
-#.idea/modules.xml
-#.idea/vcs.xml
-#.mvn/wrapper/maven-wrapper.jar
-#.mvn/wrapper/maven-wrapper.properties
-#CRUD_elibrary.iml
-#mvnw
-#mvnw.cmd
