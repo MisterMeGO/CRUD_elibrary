@@ -18,15 +18,15 @@ public class PeopleController {
         this.personDAO = personDAO;
     }
 
-    @PostMapping            //todo (Доделать валидацию, пока без неё)
-    public String create(@ModelAttribute("person")Person person){
-        personDAO.save(person);
-        return "redirect:/people";
+    @GetMapping("/create")
+    public String newPerson(@ModelAttribute("person")Person person){
+        return "people/create";
     }
 
-    @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person")Person person){
-        return "people/new";
+    @PostMapping()            //todo (Доделать валидацию, пока без неё)
+    public String createPerson(@ModelAttribute("person")Person person){
+        personDAO.save(person);
+        return "redirect:/people";
     }
 
     @GetMapping()
@@ -36,7 +36,7 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String showById(@PathVariable("id") int id, Model model){
+    public String showPersonById(@PathVariable("id") int id, Model model){
         model.addAttribute("person", personDAO.showById(id));
         return "person/showById";
     }

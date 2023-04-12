@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class Person {
+
+    private int id;
     @NotEmpty(message = "У пользователя должно быть имя!")
     @Size(max = 50)
     private String full_name;
@@ -12,7 +14,8 @@ public class Person {
     @Min(1900)
     private int age;
 
-    public Person(String full_name, int age) {
+    public Person(int id, String full_name, int age) {
+        this.id = id;
         this.full_name = full_name;
         this.age = age;
     }
@@ -34,5 +37,13 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

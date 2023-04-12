@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<h1>Информация о книге:</h1>
+<p th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getAge()}">VALUE</p>
+<p th:text="${'Эта книга свободна. Хотите назначить её кому-нибудь?'}"
+   th:if="${book.getHolder()==0}">VALUE</p>
+<p th:text="${'Эта книга сейчас у '+person.getFull_name()}"
+   th:if="${book.getHolder()>0}">VALUE</p>
+</body>
+</html>

@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class Book {
+
+    private int id;
+    private int holder;
     @NotEmpty(message = "У книги должно быть название!")
     @Size(max = 50)
     private String title;
@@ -13,7 +16,9 @@ public class Book {
     @NotEmpty
     private int age;
 
-    public Book(String title, String author, int age) {
+    public Book(int id, int holder, String title, String author, int age) {
+        this.id = id;
+        this.holder = holder;
         this.title = title;
         this.author = author;
         this.age = age;
@@ -44,5 +49,21 @@ public class Book {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHolder() {
+        return holder;
+    }
+
+    public void setHolder(int holder) {
+        this.holder = holder;
     }
 }

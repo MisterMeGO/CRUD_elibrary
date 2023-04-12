@@ -3,10 +3,11 @@ package com.example.elibrary.crud_elibrary_project.dao;
 import com.example.elibrary.crud_elibrary_project.models.Book;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-
+@Component
 public class BookDAO {
 
     private final JdbcTemplate jdbcTemplate;
@@ -16,11 +17,12 @@ public class BookDAO {
     }
 
     public List<Book> showAll() {
-        return jdbcTemplate.query("SELECT * FROM book", new BeanPropertyRowMapper<>(Book.class));
+        return jdbcTemplate.query("SELECT * FROM book", new BookMapper());
     }
 
-    public Optional<Book> showById(int id) {
-        return jdbcTemplate.queryForStream("SELECT * FROM book WHERE id=?", new BeanPropertyRowMapper<>(Book.class), id).findAny();
+    public Book showById(int id) {
+        Optional<Book> returnBook = jdbcTemplate.queryForStream("SELECT * FROM book WHERE id=?", new BookMapper(), id).findAny();
+        return returnBook.orElse(null);
     }
 
     public void updateBook(Book book, int id) {
