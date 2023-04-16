@@ -2,14 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book</title>
+    <title>Книга</title>
 </head>
 <body>
 <h1>Информация о книге:</h1>
 <p th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getAge()}">VALUE</p>
-<p th:text="${'Эта книга свободна. Хотите назначить её кому-нибудь?'}"
-   th:if="${book.getHolder()==0}">VALUE</p>
-<p th:text="${'Эта книга сейчас у '+person.getFull_name()}"
-   th:if="${book.getHolder()>0}">VALUE</p>
+
+<form th:method="PATCH" th:action="@{/books/{id}/appoint_holder(id = ${book.getId()})}" th:if="${book.getHolder()==0}">
+    <p th:text="${'Эта книга свободна. Хотите назначить её кому-нибудь?'}"/>
+    <label for="owner">Выберите читателя: </label>
+    <select th:object="${person}" th:field="*{id}" id="owner">
+        <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFull_name()}"></option>
+    </select>
+    <input type="submit" value="Назначить!">
+</form>
+
+<div th:if="${book.getHolder()>0}">
+    <p th:text="${'Эта книга сейчас у '+holder.getFull_name()}"
+       th:if="${book.getHolder()>0}">VALUE</p>
+    <form th:method="PATCH" th:action="@{/books/{id}/rid_book(id = ${book.getId()})}">
+        <input type="submit" value="Освободить книгу!">
+    </form>
+</div>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/books/{id}/edit(id = ${book.getId()})}">
+    <input type="submit" value="Редактировать">
+</form>
+<br/>
+
+<form th:method="DELETE" th:action="@{/books/{id}(id = ${book.getId()})}">
+    <input type="submit" value="Удалить"/>
+</form>
 </body>
 </html>

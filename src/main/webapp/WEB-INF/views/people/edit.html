@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить кингу</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/people}" th:object="${person}">
+    <label for="full_name">Введите ФИО читетеля: </label>
+    <input type="text" th:field="*{full_name}" id="full_name"/>
+    <br/>
+    <label for="age">Введите год рождения читателя: </label>
+    <input type="text" th:field="*{age}" id="age"/>
+    <br/>
+    <input type="submit" value="Редактировать читателя!">
+</form>
+</body>
+</html>

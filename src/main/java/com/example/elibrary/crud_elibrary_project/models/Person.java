@@ -1,9 +1,17 @@
 package com.example.elibrary.crud_elibrary_project.models;
 
+import com.example.elibrary.crud_elibrary_project.dao.PersonDAO;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
 public class Person {
 
     private int id;
@@ -14,10 +22,16 @@ public class Person {
     @Min(1900)
     private int age;
 
+    @Autowired
+    private PersonDAO personDAO;
+
+    private List<Book> books;
+
     public Person(int id, String full_name, int age) {
         this.id = id;
         this.full_name = full_name;
         this.age = age;
+        this.books = personDAO.getBooksPerPerson(this);
     }
 
     public Person() {
@@ -45,5 +59,9 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 }

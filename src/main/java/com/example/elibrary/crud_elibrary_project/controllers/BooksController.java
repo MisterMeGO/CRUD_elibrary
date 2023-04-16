@@ -21,12 +21,12 @@ public class BooksController {
     }
 
     @GetMapping("/create")
-    public String newBook(@RequestParam("book")Book book){
+    public String newBook(@ModelAttribute("book")Book book){
         return "books/create";
     }
 
     @PostMapping()
-    public String createBook(@RequestParam("book")Book book){
+    public String createBook(@ModelAttribute("book")Book book){
         bookDAO.save(book);
         return "redirect:/books";
     }
@@ -38,12 +38,13 @@ public class BooksController {
     }
 
     @GetMapping("/{id}")
-    public String showBookById(@PathVariable("id")int id, Model model){
+    public String showBookById(@PathVariable("id")int id, Model model, @ModelAttribute("person")Person person){
         Book book = bookDAO.showById(id);
         if(book.getHolder() != 0) {
-            Person person = personDAO.showById(book.getHolder());
-            model.addAttribute("person", person);
+            Person holder = personDAO.showById(book.getHolder());
+            model.addAttribute("holder", holder);
         }
+        model.addAttribute("people", personDAO.showAll());
         model.addAttribute("book", book);
         return "books/showById";
     }
@@ -64,5 +65,17 @@ public class BooksController {
     public String delete(@PathVariable("id")int id){
         bookDAO.delete(id);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/rid_book")
+    public String removeHolder(@PathVariable("id")int id){
+        bookDAO.rid_book(id);
+        return "redirect:/books/{id}";
+    }
+
+    @PatchMapping("/{id}/appoint_holder")
+    public String appointHolder(@PathVariable("id")int id, @ModelAttribute("person")Person person){
+        bookDAO.appoint_holder(id, person.getId());
+        return "redirect:/books/{id}";
     }
 }

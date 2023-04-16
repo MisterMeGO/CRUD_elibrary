@@ -31,14 +31,16 @@ public class PeopleController {
 
     @GetMapping()
     public String showAll(Model model){
-        model.addAttribute("person", personDAO.showAll());
+        model.addAttribute("people", personDAO.showAll());
         return "people/showAll";
     }
 
     @GetMapping("/{id}")
     public String showPersonById(@PathVariable("id") int id, Model model){
-        model.addAttribute("person", personDAO.showById(id));
-        return "person/showById";
+        Person person = personDAO.showById(id);
+        model.addAttribute("person", person);
+        model.addAttribute("books", personDAO.getBooksPerPerson(person));
+        return "people/showById";
     }
 
     @GetMapping("/{id}/edit")

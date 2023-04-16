@@ -1,5 +1,6 @@
 package com.example.elibrary.crud_elibrary_project.dao;
 
+import com.example.elibrary.crud_elibrary_project.models.Book;
 import com.example.elibrary.crud_elibrary_project.models.Person;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,5 +38,9 @@ public class PersonDAO {
 
     public void save(Person person) {
         jdbcTemplate.update("INSERT INTO person(full_name, age) VALUES(?,?)", person.getFull_name(), person.getAge());
+    }
+
+    public List<Book> getBooksPerPerson(Person person) {
+        return jdbcTemplate.query("SELECT * FROM book WHERE holder=?", new BookMapper(), person.getId());
     }
 }
