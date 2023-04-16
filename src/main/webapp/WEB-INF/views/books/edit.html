@@ -5,7 +5,7 @@
     <title>Изменить кингу</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/books}" th:object="${book}">
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
     <label for="title">Введите название книги: </label>
     <input type="text" th:field="*{title}" id="title"/>
     <br/>
