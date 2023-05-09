@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Информация о читателе:</h1>
-<p th:text="${person.getFull_name()+', '+person.getAge()}">VALUE</p>
+<p th:text="${person.getFullName()+', '+person.getAge()}">VALUE</p>
 <p th:text="${'Читатель пока не взял ни одной книги!'}"
    th:if="${books.isEmpty()}">VALUE</p>
 
@@ -14,7 +14,8 @@
     <hr/>
     <label style="font-size: 18px; font-weight: bold">Книги:</label>
     <div th:each="book : ${books}">
-        <a th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getAge()}">VALUE</a>
+        <a th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getAge()}"
+        th:style="${book.isOverdue()} ? 'color: red'">VALUE</a>
     </div>
 
 </div>

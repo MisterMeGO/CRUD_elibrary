@@ -1,9 +1,11 @@
 package com.example.elibrary.crud_elibrary_project.controllers;
 
-import com.example.elibrary.crud_elibrary_project.dao.BookDAO;
-import com.example.elibrary.crud_elibrary_project.dao.PersonDAO;
 import com.example.elibrary.crud_elibrary_project.models.Book;
 import com.example.elibrary.crud_elibrary_project.models.Person;
+import com.example.elibrary.crud_elibrary_project.services.BooksService;
+import com.example.elibrary.crud_elibrary_project.services.PeopleService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
+    private final BooksService booksService;
+    private final PeopleService peopleService;
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BooksController(BooksService booksService, PeopleService peopleService) {
+        this.booksService = booksService;
+        this.peopleService = peopleService;
     }
 
     @GetMapping("/create")
@@ -27,55 +29,62 @@ public class BooksController {
 
     @PostMapping()
     public String createBook(@ModelAttribute("book")Book book){
-        bookDAO.save(book);
+        booksService.saveBook(book);
         return "redirect:/books";
     }
 
     @GetMapping()
-    public String showAll(Model model){
-        model.addAttribute("books", bookDAO.showAll());
+    public String showAll(Model model, HttpServletRequest request){
+
+        model.addAttribute("books", booksService.findAllBooks(request));
+
         return "books/showAll";
     }
 
     @GetMapping("/{id}")
     public String showBookById(@PathVariable("id")int id, Model model, @ModelAttribute("person")Person person){
-        Book book = bookDAO.showById(id);
-        if(book.getHolder() != 0) {
-            Person holder = personDAO.showById(book.getHolder());
-            model.addAttribute("holder", holder);
-        }
-        model.addAttribute("people", personDAO.showAll());
+        Book book = booksService.findOneBook(id);
+        model.addAttribute("holder", book.getHolder());
+        model.addAttribute("people", peopleService.findAllPeople());
         model.addAttribute("book", book);
         return "books/showById";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id")int id, Model model){
-        model.addAttribute("book", bookDAO.showById(id));
+        model.addAttribute("book", booksService.findOneBook(id));
         return "/books/edit";
     }
 
     @PatchMapping("/{id}")
     public String updateBook(@PathVariable("id")int id, @ModelAttribute("book")Book book){
-        bookDAO.updateBook(book, id);
+        booksService.updateBook(book, id);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id")int id){
-        bookDAO.delete(id);
+        booksService.deleteBook(id);
         return "redirect:/books";
     }
 
     @PatchMapping("/{id}/rid_book")
     public String removeHolder(@PathVariable("id")int id){
-        bookDAO.rid_book(id);
+        booksService.rid_book(id);
         return "redirect:/books/{id}";
     }
 
     @PatchMapping("/{id}/appoint_holder")
     public String appointHolder(@PathVariable("id")int id, @ModelAttribute("person")Person person){
-        bookDAO.appoint_holder(id, person.getId());
+        booksService.appoint_holder(id, person);
         return "redirect:/books/{id}";
+    }
+
+    @GetMapping("/search")
+    public String searchBook(HttpServletRequest request, Model model){
+        String searchString = request.getParameter("search_string");
+        Book book = booksService.getBookBySearchString(searchString);
+        model.addAttribute("result", book);
+        return "/books/search";
     }
 }

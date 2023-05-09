@@ -7,7 +7,7 @@
 <body>
 <form th:method="PATCH" th:action="@{/people/{id}(id =${person.getId()})}" th:object="${person}">
     <label for="full_name">Введите ФИО читетеля: </label>
-    <input type="text" th:field="*{full_name}" id="full_name"/>
+    <input type="text" th:field="*{fullName}" id="full_name"/>
     <br/>
     <label for="age">Введите год рождения читателя: </label>
     <input type="text" th:field="*{age}" id="age"/>

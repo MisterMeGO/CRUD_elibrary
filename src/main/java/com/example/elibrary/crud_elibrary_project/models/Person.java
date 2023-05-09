@@ -1,48 +1,48 @@
 package com.example.elibrary.crud_elibrary_project.models;
 
-import com.example.elibrary.crud_elibrary_project.dao.PersonDAO;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Entity
+@Table(name = "person")
 public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
     @NotEmpty(message = "У пользователя должно быть имя!")
     @Size(max = 50)
-    private String full_name;
-    @NotEmpty
+    @Column(name = "full_name")
+    private String fullName;
+    @NotNull
     @Min(1900)
+    @Column(name = "age")
     private int age;
 
-    @Autowired
-    private PersonDAO personDAO;
-
+    @OneToMany(mappedBy = "holder")
     private List<Book> books;
 
-    public Person(int id, String full_name, int age) {
+    public Person(int id, String fullName, int age) {
         this.id = id;
-        this.full_name = full_name;
+        this.fullName = fullName;
         this.age = age;
-        this.books = personDAO.getBooksPerPerson(this);
     }
 
     public Person() {
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String full_name) {
+        this.fullName = full_name;
     }
 
     public int getAge() {
@@ -59,9 +59,5 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<Book> getBooks() {
-        return books;
     }
 }
